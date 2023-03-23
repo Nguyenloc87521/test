@@ -1,0 +1,26 @@
+20.Trị giá trung bình của tất cả các hóa đơn được bán ra trong năm 2006 là bao nhiêu?
+SELECT AVG(total) FROM `invoices` WHERE YEAR(purchase_day) = 2021;
+21.Tính doanh thu bán hàng trong năm 2006.
+SELECT SUM(total) FROM `invoices` WHERE YEAR(purchase_day) = 2021;
+22.Tìm số hóa đơn có trị giá cao nhất trong năm 2006.
+SELECT COUNT(DISTINCT invoice_id)
+FROM invoices 
+WHERE invoice_id = (SELECT MAX(total) FROM `invoices` ) AND YEAR(purchase_day) = 2021;
+24.In ra danh sách 3 khách hàng (MAKH, HOTEN) có doanh số cao nhất.
+SELECT id , name
+FROM customers
+WHERE  doanhSo IN(SELECT TOP 3 doanhSo
+    FROM   customers 
+    ORDER BY   doanhSo DESC ) ;
+25.In ra danh sách các sản phẩm (MASP, TENSP) có giá bán bằng 1 trong 3 mức giá cao nhất.
+SELECT product_id , product_name
+FROM products
+WHERE  unit_price IN(SELECT  MAX(unit_price)
+    FROM   products 
+    ORDER BY   unit_price DESC ) LIMIT 3;
+26.In ra danh sách các sản phẩm (MASP, TENSP) do “Trung Quốc” sản xuất có giá bằng 1 trong 3 mức iá thấp nhất (của tất cả các sản phẩm).
+SELECT product_id , product_name
+FROM products
+WHERE  unit_price IN(SELECT  MIN(unit_price)
+    FROM   products 
+    ORDER BY   unit_price DESC )  AND country = 'Trung Quốc' LIMIT 3;
